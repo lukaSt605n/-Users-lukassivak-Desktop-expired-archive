@@ -1,27 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
-
-const volumes = [
-  { slug: 'volume1', title: 'VOLUME I — 2026' },
-  { slug: 'volume2', title: 'VOLUME II — 2027' },
-  { slug: 'volume3', title: 'VOLUME III — 2028' },
-  { slug: 'volume4', title: 'VOLUME IV — 2029' },
-  { slug: 'volume5', title: 'VOLUME V — 2030' },
-];
-
-const defaultImages = [
-  '/img/Galery%20film35mm/Series2/IMG_9360.JPG',
-  '/img/Galery%20film35mm/Series2/IMG_9361.JPG',
-  '/img/Galery%20film35mm/Series2/IMG_9363.JPG',
-  '/img/Galery%20film35mm/Series2/IMG_9364.JPG',
-  '/img/Galery%20film35mm/Series2/IMG_9365.JPG',
-  '/img/Galery%20film35mm/Series2/IMG_9367.JPG',
-  '/img/Galery%20film35mm/Series2/IMG_9368.JPG',
-  '/img/Galery%20film35mm/Series2/IMG_9371.JPG',
-  '/img/Galery%20film35mm/Series2/IMG_9374.JPG',
-  '/img/Galery%20film35mm/Series2/IMG_9375.JPG',
-  '/img/Galery%20film35mm/Series2/IMG_9376.JPG',
-  '/img/Galery%20film35mm/Series2/IMG_9408.JPG',
-];
+import { volumes } from './data/volumes';
+import { volumeImages } from './data/images';
+import { imageMeta } from './data/imageMeta';
 
 const getRouteFromHash = () => {
   const hash = window.location.hash.replace('#', '').replace(/^\/+/, '');
@@ -30,6 +10,44 @@ const getRouteFromHash = () => {
   if (hash.startsWith('volume')) return { type: 'volume', slug: hash };
   return { type: 'landing' };
 };
+
+const blockPattern = [
+  { type: 'hero', size: 1 },
+  { type: 'pair', size: 2 },
+  { type: 'white', size: 2 },
+  { type: 'pair', size: 2 },
+  { type: 'pair', size: 2 },
+  { type: 'pair', size: 2 },
+  { type: 'closer', size: 1 },
+];
+
+const buildBlocks = (images) => {
+  const blocks = [];
+  let index = 0;
+  let patternIndex = 0;
+
+  while (index < images.length) {
+    const pattern = blockPattern[patternIndex % blockPattern.length];
+    const remaining = images.length - index;
+
+    if (remaining < pattern.size) {
+      if (remaining === 1) {
+        blocks.push({ type: 'closer', images: [images[index]] });
+      } else {
+        blocks.push({ type: 'pair', images: images.slice(index, index + 2) });
+      }
+      break;
+    }
+
+    blocks.push({ type: pattern.type, images: images.slice(index, index + pattern.size) });
+    index += pattern.size;
+    patternIndex += 1;
+  }
+
+  return blocks;
+};
+
+const getImageMeta = (src) => imageMeta[src] || null;
 
 const InternalLink = ({ to, children, ...rest }) => {
   const handleClick = (event) => {
@@ -65,69 +83,114 @@ const InternalLink = ({ to, children, ...rest }) => {
   );
 };
 
-const VolumePage = () => (
-  <main className="volume-content">
-    <section className="block hero">
-      <div className="image-container">
-        <img src={defaultImages[0]} alt="Hero image" />
-      </div>
-    </section>
+const VolumePage = ({ images }) => {
+  const blocks = buildBlocks(images);
 
-    <section className="block pair">
-      <div className="image-container">
-        <img src={defaultImages[1]} alt="Pair left" />
-      </div>
-      <div className="image-container">
-        <img src={defaultImages[2]} alt="Pair right" />
-      </div>
-    </section>
+  return (
+    <main className="volume-content">
+      {blocks.map((block, blockIndex) => {
+        if (block.type === 'hero') {
+          const meta = getImageMeta(block.images[0]);
+          return (
+            <section className="block hero" key={`hero-${blockIndex}`}>
+              <div
+                className="image-container"
+                style={meta ? { aspectRatio: `${meta.width} / ${meta.height}` } : undefined}
+              >
+                <img
+                  src={block.images[0]}
+                  alt="Hero image"
+                  loading="lazy"
+                  width={meta?.width}
+                  height={meta?.height}
+                />
+              </div>
+            </section>
+          );
+        }
 
-    <section className="block white-section">
-      <div className="offset-grid">
-        <div className="image-container large">
-          <img src={defaultImages[3]} alt="Large offset" />
-        </div>
-        <div className="image-container small">
-          <img src={defaultImages[4]} alt="Small offset" />
-        </div>
-      </div>
-      <p className="white-section-note">Kodak Portra 400 · 6x7</p>
-    </section>
+        if (block.type === 'white') {
+          const metaLeft = getImageMeta(block.images[0]);
+          const metaRight = getImageMeta(block.images[1]);
+          return (
+            <section className="block white-section" key={`white-${blockIndex}`}>
+              <div className="offset-grid">
+                <div
+                  className="image-container large"
+                  style={
+                    metaLeft ? { aspectRatio: `${metaLeft.width} / ${metaLeft.height}` } : undefined
+                  }
+                >
+                  <img
+                    src={block.images[0]}
+                    alt="Large offset"
+                    loading="lazy"
+                    width={metaLeft?.width}
+                    height={metaLeft?.height}
+                  />
+                </div>
+                <div
+                  className="image-container small"
+                  style={
+                    metaRight
+                      ? { aspectRatio: `${metaRight.width} / ${metaRight.height}` }
+                      : undefined
+                  }
+                >
+                  <img
+                    src={block.images[1]}
+                    alt="Small offset"
+                    loading="lazy"
+                    width={metaRight?.width}
+                    height={metaRight?.height}
+                  />
+                </div>
+              </div>
+              <p className="white-section-note">Kodak Portra 400 · 6x7</p>
+            </section>
+          );
+        }
 
-    <section className="block pair">
-      <div className="image-container">
-        <img src={defaultImages[5]} alt="Pair left" />
-      </div>
-      <div className="image-container">
-        <img src={defaultImages[6]} alt="Pair right" />
-      </div>
-    </section>
+        if (block.type === 'closer') {
+          const meta = getImageMeta(block.images[0]);
+          return (
+            <section className="block closer" key={`closer-${blockIndex}`}>
+              <div
+                className="image-container"
+                style={meta ? { aspectRatio: `${meta.width} / ${meta.height}` } : undefined}
+              >
+                <img
+                  src={block.images[0]}
+                  alt="Closer image"
+                  loading="lazy"
+                  width={meta?.width}
+                  height={meta?.height}
+                />
+              </div>
+            </section>
+          );
+        }
 
-    <section className="block pair">
-      <div className="image-container">
-        <img src={defaultImages[7]} alt="Pair left" />
-      </div>
-      <div className="image-container">
-        <img src={defaultImages[8]} alt="Pair right" />
-      </div>
-    </section>
-
-    <section className="block pair">
-      <div className="image-container">
-        <img src={defaultImages[9]} alt="Pair left" />
-      </div>
-      <div className="image-container">
-        <img src={defaultImages[10]} alt="Pair right" />
-      </div>
-    </section>
-
-    <section className="block closer">
-      <div className="image-container">
-        <img src={defaultImages[11]} alt="Closer image" />
-      </div>
-    </section>
-  </main>
-);
+        return (
+          <section className="block pair" key={`pair-${blockIndex}`}>
+            {block.images.map((image, imageIndex) => {
+              const meta = getImageMeta(image);
+              return (
+                <div
+                  className="image-container"
+                  key={`pair-${blockIndex}-${imageIndex}`}
+                  style={meta ? { aspectRatio: `${meta.width} / ${meta.height}` } : undefined}
+                >
+                  <img src={image} alt="Pair" loading="lazy" width={meta?.width} height={meta?.height} />
+                </div>
+              );
+            })}
+          </section>
+        );
+      })}
+    </main>
+  );
+};
 
 function App() {
   const [route, setRoute] = useState(getRouteFromHash());
@@ -135,6 +198,7 @@ function App() {
     () => volumes.find((volume) => volume.slug === route.slug) || volumes[0],
     [route.slug]
   );
+  const activeImages = volumeImages[activeVolume.slug] || [];
 
   useEffect(() => {
     const onHashChange = () => {
@@ -219,7 +283,7 @@ function App() {
               INFO
             </InternalLink>
           </header>
-          <VolumePage />
+          <VolumePage images={activeImages} />
         </>
       )}
 

@@ -1,0 +1,15 @@
+export const volumes = [
+  { slug: 'volume1', title: 'VOLUME I', series: 'Series1' },
+  { slug: 'volume2', title: 'VOLUME II', series: 'Series2' },
+  { slug: 'volume3', title: 'VOLUME III', series: 'Series3' },
+  { slug: 'volume4', title: 'VOLUME IV', series: 'Series4' },
+  { slug: 'volume5', title: 'VOLUME V ', series: 'Series5' },
+  { slug: 'volume6', title: 'VOLUME VI', series: 'Series7' },
+  { slug: 'volume7', title: 'VOLUME VII', series: 'Series8' },
+  { slug: 'volume8', title: 'VOLUME VIII', series: 'Series9' },
+  { slug: 'volume9', title: 'VOLUME IX', series: 'Series10' },
+  { slug: 'volume10', title: 'VOLUME X', series: 'Series12' },
+  { slug: 'volume11', title: 'VOLUME XI', series: 'Series13' },
+  { slug: 'volume12', title: 'VOLUME XII', series: 'Series14' },
+  { slug: 'volume13', title: 'VOLUME XIII', series: 'Series15' },
+];

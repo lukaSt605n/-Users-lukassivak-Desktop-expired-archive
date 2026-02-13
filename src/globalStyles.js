@@ -137,7 +137,6 @@ const globalStyles = css`
   .image-container {
     width: 100%;
     background: #0f0f0f;
-    aspect-ratio: 3 / 2;
     overflow: hidden;
   }
 
@@ -153,10 +152,6 @@ const globalStyles = css`
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 60px;
-  }
-
-  .pair .image-container {
-    aspect-ratio: 1 / 1;
   }
 
   .pair .image-container img {
@@ -181,14 +176,6 @@ const globalStyles = css`
     grid-template-columns: 2fr 1fr;
     gap: 40px;
     align-items: start;
-  }
-
-  .offset-grid .image-container.large {
-    aspect-ratio: 4 / 3;
-  }
-
-  .offset-grid .image-container.small {
-    aspect-ratio: 1 / 1;
   }
 
   .offset-grid .image-container img {
@@ -273,8 +260,6 @@ const globalStyles = css`
     }
 
     .white-section {
-      margin-left: -1rem;
-      margin-right: -1rem;
       padding: 3rem 1rem;
     }
 
