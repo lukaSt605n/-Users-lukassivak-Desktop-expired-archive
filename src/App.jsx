@@ -1,169 +1,246 @@
-import styled from '@emotion/styled';
-import MosaicGrid from './components/MosaicGrid';
-import { seriesSets } from './data/series';
+import { useEffect, useMemo, useState } from 'react';
 
-const Nav = styled.nav`
-  width: 94%;
-  max-width: 1500px;
-  margin: 30px auto 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  border-bottom: 1px solid rgba(20, 20, 20, 0.12);
-  padding-bottom: 14px;
-`;
+const volumes = [
+  { slug: 'volume1', title: 'VOLUME I — 2026' },
+  { slug: 'volume2', title: 'VOLUME II — 2027' },
+  { slug: 'volume3', title: 'VOLUME III — 2028' },
+  { slug: 'volume4', title: 'VOLUME IV — 2029' },
+  { slug: 'volume5', title: 'VOLUME V — 2030' },
+];
 
-const NavLinks = styled.div`
-  display: flex;
-  gap: 28px;
-  font-size: 12px;
-  letter-spacing: 0.2em;
-`;
+const defaultImages = [
+  '/img/Galery%20film35mm/Series2/IMG_9360.JPG',
+  '/img/Galery%20film35mm/Series2/IMG_9361.JPG',
+  '/img/Galery%20film35mm/Series2/IMG_9363.JPG',
+  '/img/Galery%20film35mm/Series2/IMG_9364.JPG',
+  '/img/Galery%20film35mm/Series2/IMG_9365.JPG',
+  '/img/Galery%20film35mm/Series2/IMG_9367.JPG',
+  '/img/Galery%20film35mm/Series2/IMG_9368.JPG',
+  '/img/Galery%20film35mm/Series2/IMG_9371.JPG',
+  '/img/Galery%20film35mm/Series2/IMG_9374.JPG',
+  '/img/Galery%20film35mm/Series2/IMG_9375.JPG',
+  '/img/Galery%20film35mm/Series2/IMG_9376.JPG',
+  '/img/Galery%20film35mm/Series2/IMG_9408.JPG',
+];
 
-const HeroWrapper = styled.div`
-  width: 94%;
-  max-width: 1500px;
-  margin: 70px auto 40px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid rgba(20, 20, 20, 0.08);
-`;
+const getRouteFromHash = () => {
+  const hash = window.location.hash.replace('#', '').replace(/^\/+/, '');
+  if (!hash || hash === '') return { type: 'landing' };
+  if (hash === 'info') return { type: 'info' };
+  if (hash.startsWith('volume')) return { type: 'volume', slug: hash };
+  return { type: 'landing' };
+};
 
-const Title = styled.h1`
-  font-size: 44px;
-  font-weight: 400;
-  letter-spacing: 0.02em;
-  margin-bottom: 16px;
-`;
+const InternalLink = ({ to, children, ...rest }) => {
+  const handleClick = (event) => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const href = event.currentTarget.getAttribute('href');
+    if (!href) return;
+    const url = new URL(href, window.location.href);
+    const isHttp = url.protocol === 'http:' || url.protocol === 'https:';
+    const isSameOrigin = url.origin === window.location.origin;
+    const isAnchorOnly =
+      url.pathname === window.location.pathname &&
+      url.search === window.location.search &&
+      url.hash;
 
-const Subtitle = styled.p`
-  font-size: 16px;
-  color: ${({ theme }) => theme.colors.muted};
-  max-width: 560px;
-`;
+    if (!isHttp || !isSameOrigin || isAnchorOnly || prefersReducedMotion) {
+      return;
+    }
 
-const Section = styled.section`
-  width: 94%;
-  max-width: 1500px;
-  margin: 0 auto;
-  padding: 60px 0 120px;
-`;
-
-const SectionTitle = styled.h2`
-  font-size: 22px;
-  font-weight: 400;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  margin-bottom: 16px;
-`;
-
-const SectionText = styled.p`
-  font-size: 16px;
-  color: ${({ theme }) => theme.colors.muted};
-  max-width: 700px;
-`;
-
-const Footer = styled.footer`
-  width: 94%;
-  max-width: 1500px;
-  margin: 0 auto;
-  padding: 40px 0 80px;
-  border-top: 1px solid rgba(20, 20, 20, 0.08);
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px 24px;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 12px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-`;
-
-const FooterText = styled.div`
-  color: ${({ theme }) => theme.colors.muted};
-`;
-
-function App() {
-  const tileSizes = [
-    { w: 4, h: 5 },
-    { w: 3, h: 4 },
-    { w: 5, h: 4 },
-    { w: 2, h: 3 },
-    { w: 3, h: 5 },
-    { w: 4, h: 3 },
-    { w: 3, h: 3 },
-    { w: 4, h: 5 },
-    { w: 2, h: 3 },
-    { w: 3, h: 4 },
-    { w: 5, h: 3 },
-    { w: 3, h: 6 },
-    { w: 4, h: 4 },
-    { w: 2, h: 4 },
-    { w: 3, h: 3 },
-  ];
-
-  const items = seriesSets.map((series, index) => ({
-    images: series.images,
-    ...tileSizes[index % tileSizes.length],
-  }));
+    event.preventDefault();
+    const current = window.location.hash.replace('#', '').replace(/^\/+/, '');
+    const next = to.replace(/^#?\//, '');
+    if (current === next) return;
+    document.body.classList.add('fade-out');
+    setTimeout(() => {
+      window.location.hash = `#/${next}`;
+    }, 400);
+  };
 
   return (
-    <div id="home">
-      <Nav>
-        <div>ARCHIVE 35mm</div>
-        <NavLinks>
-          <a href="#home">Home</a>
-          <a href="#archive-notes">Archive Notes</a>
-          <a href="#fragments">Fragments</a>
-          <a href="#contact">Contact</a>
-        </NavLinks>
-      </Nav>
+    <a href={`#/${to.replace(/^#?\//, '')}`} onClick={handleClick} {...rest}>
+      {children}
+    </a>
+  );
+};
 
-      <HeroWrapper>
-        <Title>Quiet frames from unreliable film stock.</Title>
-        <Subtitle>Fragments of analog memories from unreliable materials.</Subtitle>
-      </HeroWrapper>
+const VolumePage = () => (
+  <main className="volume-content">
+    <section className="block hero">
+      <div className="image-container">
+        <img src={defaultImages[0]} alt="Hero image" />
+      </div>
+    </section>
 
-      <MosaicGrid items={items} />
+    <section className="block pair">
+      <div className="image-container">
+        <img src={defaultImages[1]} alt="Pair left" />
+      </div>
+      <div className="image-container">
+        <img src={defaultImages[2]} alt="Pair right" />
+      </div>
+    </section>
 
-      <Section id="archive-notes">
-        <SectionTitle>Archive Notes</SectionTitle>
-        <SectionText>
-          A living archive of 35mm film - expired, fresh, and occasionally unpredictable.
-        </SectionText>
-        <SectionText>
-          I work intuitively, but with intention: light first, then structure, then restraint.
-        </SectionText>
-        <SectionText>
-          Exposure is often judged in the moment, then refined through scanning and selection.
-        </SectionText>
-        <SectionText>Home-scanned.</SectionText>
-        <SectionText>
-          Imperfections are not “fixed” by default - only removed when they distract from the image.
-        </SectionText>
-      </Section>
+    <section className="block white-section">
+      <div className="offset-grid">
+        <div className="image-container large">
+          <img src={defaultImages[3]} alt="Large offset" />
+        </div>
+        <div className="image-container small">
+          <img src={defaultImages[4]} alt="Small offset" />
+        </div>
+      </div>
+      <p className="white-section-note">Kodak Portra 400 · 6x7</p>
+    </section>
 
-      <Section id="fragments">
-        <SectionTitle>Fragments</SectionTitle>
-        <SectionText>Studies, experiments, and incomplete sets.</SectionText>
-        <SectionText>
-          Work that doesn’t belong in the main archive yet - but still matters.
-        </SectionText>
-      </Section>
+    <section className="block pair">
+      <div className="image-container">
+        <img src={defaultImages[5]} alt="Pair left" />
+      </div>
+      <div className="image-container">
+        <img src={defaultImages[6]} alt="Pair right" />
+      </div>
+    </section>
 
-      <Section id="contact">
-        <SectionTitle>Contact</SectionTitle>
-        <SectionText>For prints, collaborations, or archive-related inquiries.</SectionText>
-        <SectionText>Email only - response time varies.</SectionText>
-        <SectionText>sivaklukas@yahoo.com</SectionText>
-      </Section>
+    <section className="block pair">
+      <div className="image-container">
+        <img src={defaultImages[7]} alt="Pair left" />
+      </div>
+      <div className="image-container">
+        <img src={defaultImages[8]} alt="Pair right" />
+      </div>
+    </section>
 
-      <Footer>
-        <FooterText>Archive 35mm © 2025</FooterText>
-        <FooterText>sivaklukas@yahoo.com</FooterText>
-      </Footer>
+    <section className="block pair">
+      <div className="image-container">
+        <img src={defaultImages[9]} alt="Pair left" />
+      </div>
+      <div className="image-container">
+        <img src={defaultImages[10]} alt="Pair right" />
+      </div>
+    </section>
+
+    <section className="block closer">
+      <div className="image-container">
+        <img src={defaultImages[11]} alt="Closer image" />
+      </div>
+    </section>
+  </main>
+);
+
+function App() {
+  const [route, setRoute] = useState(getRouteFromHash());
+  const activeVolume = useMemo(
+    () => volumes.find((volume) => volume.slug === route.slug) || volumes[0],
+    [route.slug]
+  );
+
+  useEffect(() => {
+    const onHashChange = () => {
+      document.body.classList.remove('fade-out');
+      setRoute(getRouteFromHash());
+      window.scrollTo({ top: 0, behavior: 'auto' });
+    };
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
+
+  useEffect(() => {
+    document.body.classList.remove('landing', 'volume', 'info-page');
+    if (route.type === 'landing') document.body.classList.add('landing');
+    if (route.type === 'volume') document.body.classList.add('volume');
+    if (route.type === 'info') document.body.classList.add('info-page');
+  }, [route.type]);
+
+  useEffect(() => {
+    if (route.type === 'landing') {
+      document.title = 'EXPIRED ARCHIVE';
+      return;
+    }
+    if (route.type === 'info') {
+      document.title = 'INFO · EXPIRED ARCHIVE';
+      return;
+    }
+    document.title = `${activeVolume.title} · EXPIRED ARCHIVE`;
+  }, [route.type, activeVolume.title]);
+
+  useEffect(() => {
+    if (route.type !== 'volume') return undefined;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return undefined;
+    const faders = document.querySelectorAll('.block');
+    const appearOptions = { threshold: 0.2, rootMargin: '0px 0px -50px 0px' };
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('visible');
+        obs.unobserve(entry.target);
+      });
+    }, appearOptions);
+
+    faders.forEach((fader) => {
+      fader.classList.add('fade-in');
+      observer.observe(fader);
+    });
+
+    return () => observer.disconnect();
+  }, [route.type, route.slug]);
+
+  return (
+    <div>
+      {route.type === 'landing' && (
+        <>
+          <main className="archive">
+            <h1 className="archive-title">EXPIRED ARCHIVE</h1>
+            <nav className="volume-list">
+              {volumes.map((volume) => (
+                <InternalLink key={volume.slug} to={volume.slug} className="volume-link">
+                  {volume.title}
+                </InternalLink>
+              ))}
+            </nav>
+          </main>
+          <footer className="landing-footer">
+            <InternalLink to="info" className="info-link">
+              INFO
+            </InternalLink>
+          </footer>
+        </>
+      )}
+
+      {route.type === 'volume' && (
+        <>
+          <header className="volume-nav">
+            <InternalLink to="" className="nav-back">
+              ← ARCHIVE
+            </InternalLink>
+            <InternalLink to="info" className="nav-info">
+              INFO
+            </InternalLink>
+          </header>
+          <VolumePage />
+        </>
+      )}
+
+      {route.type === 'info' && (
+        <>
+          <header className="info-nav">
+            <InternalLink to="">← ARCHIVE</InternalLink>
+          </header>
+          <main className="info-content">
+            <h1>Info</h1>
+            <p>
+              Analog film photographer working with medium format.
+              <br />
+              Equipment: Mamiya RB67, Leica M6.
+              <br />
+              Contact:{' '}
+              <a href="mailto:hello@expiredarchive.com">hello@expiredarchive.com</a>
+            </p>
+          </main>
+        </>
+      )}
     </div>
   );
 }
