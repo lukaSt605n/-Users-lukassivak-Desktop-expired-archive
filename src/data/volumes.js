@@ -2,7 +2,7 @@ export const volumes = [
   { slug: 'volume1', title: 'VOLUME I · Silent Architecture', series: 'Series1' },
   { slug: 'volume2', title: 'VOLUME II · Elevation', series: 'Series2' },
   { slug: 'volume3', title: 'VOLUME III · Remains', series: 'Series3' },
-  { slug: 'volume4', title: 'VOLUME IV · Traces', series: 'Series4' },
+  { slug: 'volume4', title: 'VOLUME IV · Fragment', series: 'Series4' },
   { slug: 'volume5', title: 'VOLUME V · In Bloom', series: 'Series5' },
   { slug: 'volume6', title: 'VOLUME VI · Distance', series: 'Series7' },
   { slug: 'volume7', title: 'VOLUME VII · Celebration', series: 'Series8' },

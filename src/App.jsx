@@ -23,10 +23,19 @@ const blockPattern = [
 
 const buildBlocks = (images, { disablePairs = false } = {}) => {
   if (disablePairs) {
-    return images.map((image, index) => ({
-      type: index === 0 ? 'hero' : index === images.length - 1 ? 'closer' : 'hero',
+    if (images.length <= 1) {
+      return images.map((image) => ({ type: 'hero', images: [image] }));
+    }
+
+    const singleImages = images.slice(0, -2);
+    const pairedImages = images.slice(-2);
+    const blocks = singleImages.map((image, index) => ({
+      type: index === 0 ? 'hero' : 'hero',
       images: [image],
     }));
+
+    blocks.push({ type: 'pair', images: pairedImages });
+    return blocks;
   }
 
   const blocks = [];
@@ -321,10 +330,10 @@ function App() {
             <p>
               Analog film photographer working with medium format.
               <br />
-              Equipment: Mamiya RB67, Leica M6.
+              Equipment: Fujika ST605N · f=55mm.
               <br />
               Contact:{' '}
-              <a href="mailto:hello@expiredarchive.com">hello@expiredarchive.com</a>
+              <a href="mailto:sivaklukas@yahoo.com">sivaklukas@yahoo.com</a>
             </p>
           </main>
         </>
