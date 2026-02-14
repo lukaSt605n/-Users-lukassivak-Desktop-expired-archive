@@ -1,16 +1,129 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+EXPIRED ARCHIVE
 
-Currently, two official plugins are available:
+A minimal, quiet-luxury photo archive built with React + Vite.
+Single-page app with hash-based routes for Volumes and an Info page.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Tech
+- React
+- Vite
+- (Optional) Emotion / styled system if used in your project
 
-## React Compiler
+## Getting Started
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1) Install
+```bash
+npm install
+````
 
-## Expanding the ESLint configuration
+2) Run locally
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm run dev
+```
+
+Open the local URL Vite prints in the terminal.
+
+3) Build
+
+```bash
+npm run build
+```
+
+4) Preview build
+
+```bash
+npm run preview
+```
+
+Routes
+
+This app uses hash routing (works well on static hosting):
+
+* `#/` - Landing (Archive)
+* `#/volume1` ... `#/volumeN` - Volume pages
+* `#/info` - Info page
+
+Project Structure (typical)
+
+```
+src/
+  App.jsx
+  main.jsx
+  globalStyles.js
+  theme/
+    theme.js
+public/
+  img/
+    Gallery_film35mm/
+      Series01/
+      Series02/
+      ...
+```
+
+Adding a New Volume
+
+1. Create a new image folder:
+
+```
+public/img/Gallery_film35mm/SeriesXX/
+```
+
+2. Add your selected images (keep filenames simple).
+   Example:
+
+```
+01.jpg
+02.jpg
+03.jpg
+```
+
+3. Register the volume in your data/config (wherever you store volume definitions).
+   Typical fields:
+
+* `title` (e.g. `VOLUME XII`)
+* `slug` or `route` (e.g. `volume12`)
+* `images` array (paths to `public/` assets)
+* optional `layout` settings (hero, pair, etc.)
+
+4. Confirm it renders at:
+
+```
+#/volume12
+```
+
+Image Guidelines (recommended)
+
+To keep the site consistent:
+
+* Use 3 hero-level images per volume (strongest set only)
+* Keep a clear hierarchy:
+
+  * 1 hero image
+  * 1 secondary image
+  * 1 “breath” image (space/atmosphere)
+* Resize large images before committing (faster load)
+
+Deployment
+
+This project is static-friendly.
+
+Netlify
+
+* Build command: `npm run build`
+* Publish directory: `dist`
+
+GitHub Pages (optional)
+
+Use hash routing (already compatible), then deploy `dist`.
+
+ Notes
+
+* If you move image folders, update the paths in your volume data.
+* If something doesn’t show: hard refresh + check DevTools Console + Network tab.
+
+ License
+
+Personal project. All photos belong to the author.
+
+
