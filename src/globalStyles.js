@@ -25,6 +25,8 @@ const globalStyles = css`
     height: auto;
   }
 
+
+
   a {
     color: inherit;
     text-decoration: none;

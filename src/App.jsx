@@ -21,7 +21,14 @@ const blockPattern = [
   { type: 'closer', size: 1 },
 ];
 
-const buildBlocks = (images) => {
+const buildBlocks = (images, { disablePairs = false } = {}) => {
+  if (disablePairs) {
+    return images.map((image, index) => ({
+      type: index === 0 ? 'hero' : index === images.length - 1 ? 'closer' : 'hero',
+      images: [image],
+    }));
+  }
+
   const blocks = [];
   let index = 0;
   let patternIndex = 0;
@@ -48,6 +55,7 @@ const buildBlocks = (images) => {
 };
 
 const getImageMeta = (src) => imageMeta[src] || null;
+const resolveImageSrc = (src) => `${import.meta.env.BASE_URL}${src.replace(/^\/+/, '')}`;
 
 const InternalLink = ({ to, children, ...rest }) => {
   const handleClick = (event) => {
@@ -83,8 +91,9 @@ const InternalLink = ({ to, children, ...rest }) => {
   );
 };
 
-const VolumePage = ({ images }) => {
-  const blocks = buildBlocks(images);
+const VolumePage = ({ images, disablePairs, volumeSlug }) => {
+  const blocks = buildBlocks(images, { disablePairs });
+  const isScaledImage = () => false;
 
   return (
     <main className="volume-content">
@@ -98,7 +107,8 @@ const VolumePage = ({ images }) => {
                 style={meta ? { aspectRatio: `${meta.width} / ${meta.height}` } : undefined}
               >
                 <img
-                  src={block.images[0]}
+                  className={isScaledImage(block.images[0]) ? 'scaled-80' : undefined}
+                  src={resolveImageSrc(block.images[0])}
                   alt="Hero image"
                   loading="lazy"
                   width={meta?.width}
@@ -122,7 +132,8 @@ const VolumePage = ({ images }) => {
                   }
                 >
                   <img
-                    src={block.images[0]}
+                    className={isScaledImage(block.images[0]) ? 'scaled-80' : undefined}
+                    src={resolveImageSrc(block.images[0])}
                     alt="Large offset"
                     loading="lazy"
                     width={metaLeft?.width}
@@ -138,7 +149,8 @@ const VolumePage = ({ images }) => {
                   }
                 >
                   <img
-                    src={block.images[1]}
+                    className={isScaledImage(block.images[1]) ? 'scaled-80' : undefined}
+                    src={resolveImageSrc(block.images[1])}
                     alt="Small offset"
                     loading="lazy"
                     width={metaRight?.width}
@@ -160,7 +172,8 @@ const VolumePage = ({ images }) => {
                 style={meta ? { aspectRatio: `${meta.width} / ${meta.height}` } : undefined}
               >
                 <img
-                  src={block.images[0]}
+                  className={isScaledImage(block.images[0]) ? 'scaled-80' : undefined}
+                  src={resolveImageSrc(block.images[0])}
                   alt="Closer image"
                   loading="lazy"
                   width={meta?.width}
@@ -181,7 +194,14 @@ const VolumePage = ({ images }) => {
                   key={`pair-${blockIndex}-${imageIndex}`}
                   style={meta ? { aspectRatio: `${meta.width} / ${meta.height}` } : undefined}
                 >
-                  <img src={image} alt="Pair" loading="lazy" width={meta?.width} height={meta?.height} />
+                  <img
+                    className={isScaledImage(image) ? 'scaled-80' : undefined}
+                    src={resolveImageSrc(image)}
+                    alt=""
+                    loading="lazy"
+                    width={meta?.width}
+                    height={meta?.height}
+                  />
                 </div>
               );
             })}
@@ -283,7 +303,11 @@ function App() {
               INFO
             </InternalLink>
           </header>
-          <VolumePage images={activeImages} />
+          <VolumePage
+            images={activeImages}
+            disablePairs={activeVolume.slug === 'volume1'}
+            volumeSlug={activeVolume.slug}
+          />
         </>
       )}
 
