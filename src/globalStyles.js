@@ -3,6 +3,7 @@ import { css } from '@emotion/react';
 const globalStyles = css`
   :root {
     color-scheme: light;
+    --site-banner-height: 70px;
   }
 
   * {
@@ -17,6 +18,7 @@ const globalStyles = css`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     transition: background-color 0.3s ease, opacity 0.3s ease;
+    padding-top: var(--site-banner-height);
   }
 
   img {
@@ -40,6 +42,35 @@ const globalStyles = css`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+  }
+
+  .site-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--site-banner-height);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(6px);
+    z-index: 20;
+  }
+
+  .site-banner-title {
+    font-size: 0.9rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: #111111;
+  }
+
+  .site-banner-tagline {
+    font-size: 0.95rem;
+    font-family: 'Snell Roundhand', 'Brush Script MT', 'Lucida Handwriting', cursive;
+    color: #333333;
   }
 
   .archive {
@@ -99,7 +130,7 @@ const globalStyles = css`
 
   .volume-nav {
     position: fixed;
-    top: 0;
+    top: var(--site-banner-height);
     left: 0;
     width: 100%;
     height: 64px;
