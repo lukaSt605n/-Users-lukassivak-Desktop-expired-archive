@@ -282,6 +282,10 @@ function App() {
 
   return (
     <div>
+      <header className="site-banner">
+        <div className="site-banner-title">ARCHIVE FILM STUDIO</div>
+        <div className="site-banner-tagline">Presence over perfection</div>
+      </header>
       {route.type === 'landing' && (
         <>
           <main className="archive">
