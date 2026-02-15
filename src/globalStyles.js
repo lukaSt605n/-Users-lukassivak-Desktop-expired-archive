@@ -156,7 +156,7 @@ const globalStyles = css`
   .volume-content {
     max-width: 1200px;
     margin: 0 auto;
-    padding: calc(64px + 2rem) 2.5rem 4rem;
+    padding: calc(64px + 2rem + var(--site-banner-height)) 2.5rem 4rem;
   }
 
   .block {
