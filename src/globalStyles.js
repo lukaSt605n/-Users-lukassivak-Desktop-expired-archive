@@ -3,7 +3,6 @@ import { css } from '@emotion/react';
 const globalStyles = css`
   :root {
     color-scheme: light;
-    --site-banner-height: 70px;
   }
 
   * {
@@ -18,7 +17,6 @@ const globalStyles = css`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     transition: background-color 0.3s ease, opacity 0.3s ease;
-    padding-top: var(--site-banner-height);
   }
 
   img {
@@ -44,47 +42,34 @@ const globalStyles = css`
     align-items: center;
   }
 
-  .site-banner {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: var(--site-banner-height);
+  .archive-brand {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 4px;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(6px);
-    z-index: 20;
-  }
-
-  .site-banner-title {
-    font-size: 0.9rem;
-    letter-spacing: 0.24em;
-    text-transform: uppercase;
-    color: #111111;
-  }
-
-  .site-banner-tagline {
-    font-size: 0.95rem;
-    font-family: 'Snell Roundhand', 'Brush Script MT', 'Lucida Handwriting', cursive;
-    color: #333333;
+    gap: 6px;
+    margin-bottom: 60px;
   }
 
   .archive {
     text-align: center;
     max-width: 600px;
     padding: 2rem;
+    font-family: 'Didot', 'Bodoni 72', 'Bodoni MT', 'Times New Roman', 'Times', serif;
   }
 
   .archive-title {
-    font-weight: normal;
-    font-size: 1.5rem;
-    letter-spacing: 0.05em;
-    margin-bottom: 60px;
+    font-weight: 500;
+    font-size: 1.55rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
     color: #111111;
+  }
+
+  .archive-tagline {
+    font-size: 0.95rem;
+    font-weight: 300;
+    text-transform: lowercase;
+    color: #333333;
   }
 
   .volume-list {
@@ -96,7 +81,8 @@ const globalStyles = css`
   .volume-link {
     text-decoration: none;
     color: #111111;
-    font-size: 1.125rem;
+    font-size: 1.1rem;
+    font-weight: 500;
     letter-spacing: 0.02em;
     transition: opacity 0.3s ease;
   }
@@ -130,7 +116,7 @@ const globalStyles = css`
 
   .volume-nav {
     position: fixed;
-    top: var(--site-banner-height);
+    top: 0;
     left: 0;
     width: 100%;
     height: 64px;
@@ -156,7 +142,7 @@ const globalStyles = css`
   .volume-content {
     max-width: 1200px;
     margin: 0 auto;
-    padding: calc(64px + 2rem + var(--site-banner-height)) 2.5rem 4rem;
+    padding: calc(64px + 2rem) 2.5rem 4rem;
   }
 
   .block {
@@ -261,17 +247,20 @@ const globalStyles = css`
     max-width: 600px;
     margin: auto;
     padding: 2rem;
+    font-family: 'Didot', 'Bodoni 72', 'Bodoni MT', 'Times New Roman', 'Times', serif;
   }
 
   .info-content h1 {
-    font-weight: normal;
-    font-size: 1.5rem;
-    letter-spacing: 0.02em;
+    font-weight: 500;
+    font-size: 1.55rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
     margin-bottom: 2rem;
   }
 
   .info-content p {
-    font-size: 1rem;
+    font-size: 0.98rem;
+    font-weight: 300;
     line-height: 1.6;
     color: #333;
   }

@@ -282,14 +282,13 @@ function App() {
 
   return (
     <div>
-      <header className="site-banner">
-        <div className="site-banner-title">ARCHIVE FILM STUDIO</div>
-        <div className="site-banner-tagline">Presence over perfection</div>
-      </header>
       {route.type === 'landing' && (
         <>
           <main className="archive">
-            <h1 className="archive-title">EXPIRED ARCHIVE</h1>
+            <div className="archive-brand">
+              <h1 className="archive-title">ARCHIVE FILM STUDIO</h1>
+              <div className="archive-tagline">Presence over perfection</div>
+            </div>
             <nav className="volume-list">
               {volumes.map((volume) => (
                 <InternalLink key={volume.slug} to={volume.slug} className="volume-link">
@@ -330,14 +329,12 @@ function App() {
             <InternalLink to="">← ARCHIVE</InternalLink>
           </header>
           <main className="info-content">
-            <h1>Info</h1>
+            <h1>ARCHIVE FILM STUDIO</h1>
             <p>
-              Analog film photographer working with medium format.
+              Archive Film Studio is a curated body of analog work exploring presence, absence, and reduction.
+              Each volume is limited to three selected frames.
               <br />
-              Equipment: Fujika ST605N · f=55mm.
-              <br />
-              Contact:{' '}
-              <a href="mailto:sivaklukas@yahoo.com">sivaklukas@yahoo.com</a>
+              Contact: <a href="mailto:sivaklukas@yahoo.com">sivaklukas@yahoo.com</a>
             </p>
           </main>
         </>
