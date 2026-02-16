@@ -110,7 +110,9 @@ const globalStyles = css`
   .info-link {
     text-decoration: none;
     color: #111111;
-    opacity: 0.5;
+    opacity: 0.85;
+    letter-spacing: 0.08em;
+    font-weight: 500;
     transition: opacity 0.2s;
   }
 
@@ -142,6 +144,11 @@ const globalStyles = css`
     text-decoration: none;
     color: #aaaaaa;
     transition: color 0.2s;
+  }
+
+  .volume-nav .nav-info {
+    color: #d9d9d9;
+    letter-spacing: 0.08em;
   }
 
   .volume-nav a:hover {
@@ -243,7 +250,9 @@ const globalStyles = css`
   .info-nav a {
     text-decoration: none;
     color: #111111;
-    opacity: 0.6;
+    opacity: 0.85;
+    letter-spacing: 0.08em;
+    font-weight: 500;
     font-size: 0.875rem;
     transition: opacity 0.2s;
   }
