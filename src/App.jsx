@@ -288,6 +288,7 @@ function App() {
             <div className="archive-brand">
               <h1 className="archive-title">ARCHIVE FILM STUDIO</h1>
               <div className="archive-tagline">Presence over perfection</div>
+              <div className="archive-tagline">Slowing perception through selection</div>
             </div>
             <nav className="volume-list">
               {volumes.map((volume) => (

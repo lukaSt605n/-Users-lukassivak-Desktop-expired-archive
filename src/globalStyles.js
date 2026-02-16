@@ -77,7 +77,6 @@ const globalStyles = css`
   .archive-tagline {
     font-size: 0.95rem;
     font-weight: 300;
-    text-transform: lowercase;
     color: #333333;
   }
 
