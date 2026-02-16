@@ -3,6 +3,15 @@ import { css } from '@emotion/react';
 const globalStyles = css`
   :root {
     color-scheme: light;
+    --space-xxs: 0.375rem;
+    --space-xs: 0.75rem;
+    --space-sm: 1rem;
+    --space-md: 1.5rem;
+    --space-lg: 2rem;
+    --space-xl: 2.5rem;
+    --space-2xl: 3.5rem;
+    --space-3xl: 5rem;
+    --space-4xl: 8.75rem;
   }
 
   * {
@@ -46,14 +55,14 @@ const globalStyles = css`
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 6px;
-    margin-bottom: 60px;
+    gap: var(--space-xxs);
+    margin-bottom: var(--space-2xl);
   }
 
   .archive {
     text-align: center;
     max-width: 600px;
-    padding: 2rem;
+    padding: var(--space-lg);
     font-family: 'Didot', 'Bodoni 72', 'Bodoni MT', 'Times New Roman', 'Times', serif;
   }
 
@@ -75,7 +84,7 @@ const globalStyles = css`
   .volume-list {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: var(--space-md);
   }
 
   .volume-link {
@@ -93,8 +102,8 @@ const globalStyles = css`
 
   .landing-footer {
     position: fixed;
-    bottom: 2rem;
-    right: 2rem;
+    bottom: var(--space-lg);
+    right: var(--space-lg);
     font-size: 0.875rem;
   }
 
@@ -123,7 +132,7 @@ const globalStyles = css`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 2rem;
+    padding: 0 var(--space-lg);
     background-color: transparent;
     font-size: 0.875rem;
     z-index: 10;
@@ -142,11 +151,11 @@ const globalStyles = css`
   .volume-content {
     max-width: 1200px;
     margin: 0 auto;
-    padding: calc(64px + 2rem) 2.5rem 4rem;
+    padding: calc(64px + var(--space-lg)) var(--space-xl) var(--space-2xl);
   }
 
   .block {
-    margin: 140px 0;
+    margin: var(--space-4xl) 0;
   }
 
   .block:last-child {
@@ -170,7 +179,7 @@ const globalStyles = css`
   .pair {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 60px;
+    gap: var(--space-2xl);
   }
 
   .pair .image-container img {
@@ -182,7 +191,7 @@ const globalStyles = css`
   .white-section {
     background-color: #ffffff;
     color: #111111;
-    padding: 4rem 2rem;
+    padding: var(--space-2xl) var(--space-lg);
     width: 100vw;
     margin-left: calc(50% - 50vw);
     margin-right: calc(50% - 50vw);
@@ -193,7 +202,7 @@ const globalStyles = css`
     margin: 0 auto;
     display: grid;
     grid-template-columns: 2fr 1fr;
-    gap: 40px;
+    gap: var(--space-xl);
     align-items: start;
   }
 
@@ -205,7 +214,7 @@ const globalStyles = css`
 
   .white-section-note {
     max-width: 1200px;
-    margin: 1.5rem auto 0;
+    margin: var(--space-md) auto 0;
     font-size: 0.9rem;
     letter-spacing: 0.02em;
     color: #111111;
@@ -228,7 +237,7 @@ const globalStyles = css`
   }
 
   .info-nav {
-    padding: 2rem 2rem 0;
+    padding: var(--space-lg) var(--space-lg) 0;
   }
 
   .info-nav a {
@@ -246,7 +255,7 @@ const globalStyles = css`
   .info-content {
     max-width: 600px;
     margin: auto;
-    padding: 2rem;
+    padding: var(--space-lg);
     font-family: 'Didot', 'Bodoni 72', 'Bodoni MT', 'Times New Roman', 'Times', serif;
   }
 
@@ -255,7 +264,7 @@ const globalStyles = css`
     font-size: 1.55rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    margin-bottom: 2rem;
+    margin-bottom: var(--space-lg);
   }
 
   .info-content p {
@@ -272,30 +281,36 @@ const globalStyles = css`
   }
 
   @media (max-width: 700px) {
+    :root {
+      --space-2xl: 2.5rem;
+      --space-3xl: 3.5rem;
+      --space-4xl: 6.25rem;
+    }
+
     .volume-content {
-      padding: calc(64px + 1.5rem) 1rem 3rem;
+      padding: calc(64px + var(--space-md)) var(--space-sm) var(--space-xl);
     }
 
     .pair {
       grid-template-columns: 1fr;
-      gap: 30px;
+      gap: var(--space-lg);
     }
 
     .white-section {
-      padding: 3rem 1rem;
+      padding: var(--space-xl) var(--space-sm);
     }
 
     .offset-grid {
       grid-template-columns: 1fr;
-      gap: 20px;
+      gap: var(--space-md);
     }
 
     .block {
-      margin: 100px 0;
+      margin: var(--space-3xl) 0;
     }
 
     .volume-nav {
-      padding: 0 1rem;
+      padding: 0 var(--space-sm);
     }
   }
 
